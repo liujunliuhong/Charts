@@ -27,6 +27,7 @@ open class HorizontalBarChartRenderer: BarChartRenderer
     public override init(dataProvider: BarChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler)
     {
         super.init(dataProvider: dataProvider, animator: animator, viewPortHandler: viewPortHandler)
+        self.isHorizontalBarChart = true
     }
     
     // [CGRect] per dataset
@@ -227,8 +228,12 @@ open class HorizontalBarChartRenderer: BarChartRenderer
                 _barShadowRectBuffer.origin.x = viewPortHandler.contentLeft
                 _barShadowRectBuffer.size.width = viewPortHandler.contentWidth
                 
+//                context.setFillColor(dataSet.barShadowColor.cgColor)
+//                context.fill(_barShadowRectBuffer)
+                
+                context.addPath(createrRoundBezierPath(rect: _barShadowRectBuffer).cgPath)
                 context.setFillColor(dataSet.barShadowColor.cgColor)
-                context.fill(_barShadowRectBuffer)
+                context.fillPath()
             }
         }
         
@@ -236,10 +241,10 @@ open class HorizontalBarChartRenderer: BarChartRenderer
         
         let isSingleColor = dataSet.colors.count == 1
         
-        if isSingleColor
-        {
-            context.setFillColor(dataSet.color(atIndex: 0).cgColor)
-        }
+//        if isSingleColor
+//        {
+//            context.setFillColor(dataSet.color(atIndex: 0).cgColor)
+//        }
 
         // In case the chart is stacked, we need to accomodate individual bars within accessibilityOrdereredElements
         let isStacked = dataSet.isStacked
@@ -259,19 +264,32 @@ open class HorizontalBarChartRenderer: BarChartRenderer
                 continue
             }
             
-            if !isSingleColor
-            {
-                // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
+//            if !isSingleColor
+//            {
+//                // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
+//                context.setFillColor(dataSet.color(atIndex: j).cgColor)
+//            }
+
+//            context.fill(barRect)
+
+            context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
+            if isSingleColor {
+                context.setFillColor(dataSet.color(atIndex: 0).cgColor)
+            } else {
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
-
-            context.fill(barRect)
-
+            context.fillPath()
+            
             if drawBorder
             {
+//                context.setStrokeColor(borderColor.cgColor)
+//                context.setLineWidth(borderWidth)
+//                context.stroke(barRect)
+                
+                context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
                 context.setStrokeColor(borderColor.cgColor)
                 context.setLineWidth(borderWidth)
-                context.stroke(barRect)
+                context.strokePath()
             }
 
             // Create and append the corresponding accessibility element to accessibilityOrderedElements (see BarChartRenderer)

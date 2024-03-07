@@ -133,6 +133,8 @@
 		5BEAED401ABC1AC60013F194 /* SinusBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */; };
 		5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */; };
 		B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
+		D13D0A8D2B99BA34007FB2A0 /* DGCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FF5D7229BD10650002256E /* DGCharts.framework */; };
+		D13D0A8E2B99BA34007FB2A0 /* DGCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 06FF5D7229BD10650002256E /* DGCharts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,6 +175,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D13D0A8E2B99BA34007FB2A0 /* DGCharts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,6 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D13D0A8D2B99BA34007FB2A0 /* DGCharts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +468,7 @@
 				5B57BBB21A9B26AA0036A6CC /* Supporting Files */,
 				5B57BBB01A9B26AA0036A6CC /* Products */,
 				0630AE391D8126C0008859B0 /* Charts.xcodeproj */,
+				D13D0A8B2B99BA34007FB2A0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -596,6 +601,13 @@
 			path = Formatters;
 			sourceTree = "<group>";
 		};
+		D13D0A8B2B99BA34007FB2A0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -650,6 +662,7 @@
 				TargetAttributes = {
 					225B361C1F6EB9A50005B3D5 = {
 						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = 2E8NVCJR97;
 						LastSwiftMigration = 1150;
 					};
 					5B57BBAE1A9B26AA0036A6CC = {
@@ -891,7 +904,7 @@
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2E8NVCJR97;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -923,7 +936,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2E8NVCJR97;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

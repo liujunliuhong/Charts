@@ -40,6 +40,11 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
     /// The ````internal```` specifier is to allow subclasses (HorizontalBar) to populate the same array
     internal lazy var accessibilityOrderedElements: [[NSUIAccessibilityElement]] = accessibilityCreateEmptyOrderedElements()
 
+    /// Bar Radius
+    public var barRadius: CGFloat = 4.0
+    
+    internal var isHorizontalBarChart: Bool = false
+    
     private typealias Buffer = [CGRect]
     
     @objc open weak var dataProvider: BarChartDataProvider?
@@ -336,8 +341,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 _barShadowRectBuffer.origin.y = viewPortHandler.contentTop
                 _barShadowRectBuffer.size.height = viewPortHandler.contentHeight
                 
+//                context.setFillColor(dataSet.barShadowColor.cgColor)
+//                context.fill(_barShadowRectBuffer)
+                
+                context.addPath(createrRoundBezierPath(rect: _barShadowRectBuffer).cgPath)
                 context.setFillColor(dataSet.barShadowColor.cgColor)
-                context.fill(_barShadowRectBuffer)
+                context.fillPath()
             }
         }
 
@@ -350,17 +359,21 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             {
                 guard viewPortHandler.isInBoundsRight(barRect.origin.x) else { break }
 
+//                context.setFillColor(dataSet.barShadowColor.cgColor)
+//                context.fill(barRect)
+                
+                context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
                 context.setFillColor(dataSet.barShadowColor.cgColor)
-                context.fill(barRect)
+                context.fillPath()
             }
         }
         
         let isSingleColor = dataSet.colors.count == 1
         
-        if isSingleColor
-        {
-            context.setFillColor(dataSet.color(atIndex: 0).cgColor)
-        }
+//        if isSingleColor
+//        {
+//            context.setFillColor(dataSet.color(atIndex: 0).cgColor)
+//        }
         
         // In case the chart is stacked, we need to accomodate individual bars within accessibilityOrdereredElements
         let isStacked = dataSet.isStacked
@@ -373,19 +386,33 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             guard viewPortHandler.isInBoundsLeft(barRect.origin.x + barRect.size.width) else { continue }
             guard viewPortHandler.isInBoundsRight(barRect.origin.x) else { break }
 
-            if !isSingleColor
-            {
-                // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
+//            if !isSingleColor
+//            {
+//                // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
+//                context.setFillColor(dataSet.color(atIndex: j).cgColor)
+//            }
+            
+//            context.fill(barRect)
+            
+            context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
+            if isSingleColor {
+                context.setFillColor(dataSet.color(atIndex: 0).cgColor)
+            } else {
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
+            context.fillPath()
             
-            context.fill(barRect)
             
             if drawBorder
             {
+//                context.setStrokeColor(borderColor.cgColor)
+//                context.setLineWidth(borderWidth)
+//                context.stroke(barRect)
+                
+                context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
                 context.setStrokeColor(borderColor.cgColor)
                 context.setLineWidth(borderWidth)
-                context.stroke(barRect)
+                context.strokePath()
             }
 
             // Create and append the corresponding accessibility element to accessibilityOrderedElements
@@ -711,8 +738,8 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 
                 let trans = dataProvider.getTransformer(forAxis: set.axisDependency)
                 
-                context.setFillColor(set.highlightColor.cgColor)
-                context.setAlpha(set.highlightAlpha)
+//                context.setFillColor(set.highlightColor.cgColor)
+//                context.setAlpha(set.highlightAlpha)
                 
                 let isStack = high.stackIndex >= 0 && e.isStacked
                 
@@ -744,7 +771,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 
                 setHighlightDrawPos(highlight: high, barRect: barRect)
                 
-                context.fill(barRect)
+//                context.fill(barRect)
+                
+                context.addPath(createrRoundBezierPath(rect: barRect).cgPath)
+                context.setFillColor(set.highlightColor.cgColor)
+                context.setAlpha(set.highlightAlpha)
+                context.fillPath()
             }
         }
     }
@@ -831,5 +863,22 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         modifier(element)
 
         return element
+    }
+}
+
+extension BarChartRenderer {
+    internal func createrRoundBezierPath(rect: CGRect) -> UIBezierPath {
+        var radius = barRadius
+        if isHorizontalBarChart {
+            if rect.height < radius {
+                radius = rect.height / 2.0
+            }
+            return UIBezierPath(roundedRect: rect, byRoundingCorners: [.topRight, .bottomRight], cornerRadii: CGSize(width: radius, height: radius))
+        } else {
+            if rect.width < radius {
+                radius = rect.width / 2.0
+            }
+            return UIBezierPath(roundedRect: rect, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: radius, height: radius))
+        }
     }
 }
